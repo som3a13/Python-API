@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from time import ctime
-import requests
 from pyowm import OWM
 from pyowm.utils.config import get_default_config
 
@@ -15,9 +14,6 @@ app = Flask(__name__)
 
 ########################################
 #############APIs Tokens################
-GEOLOCATION_API_KEY = '6cedec10ca3499'
-GEOLOCATION_API_URL = 'https://ipinfo.io/json'
-
 WEATHER_API_KEY = '7d8902ab449d7423b3ccbbf735193c84'
 config = get_default_config()
 config['language'] = 'en' 
