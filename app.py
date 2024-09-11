@@ -29,7 +29,7 @@ def get_weather(location_name,coords):
     try:
         # Fetch weather data
         
-        latitude, longitude = map(float, coords.split(','))
+        latitude, longitude = map(float, coords)
         observation = weather_manager.weather_at_coords(latitude, longitude)
         w = observation.weather
         temp = w.temperature('celsius')['temp']

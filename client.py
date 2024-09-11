@@ -83,3 +83,4 @@ while True:
         response = send_command(user_request,location,coords)
         speak(response.get('response'))
         print(response.get('response'))
+        
