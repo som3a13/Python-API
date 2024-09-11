@@ -3,4 +3,4 @@ pyowm
 pytz
 timezonefinder
 datetime
-cors
+flask-cors
