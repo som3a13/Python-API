@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-
+from time import ctime
 def process_voice_command(command):
     # Mock function to simulate voice command processing
     if "weather" in command.lower():
         return "The weather today is sunny with a high of 25°C."
+    elif 'time' in command.lower():
+            ctime()   
     else:
         return "Sorry, I didn't understand that command."
 
