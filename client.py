@@ -5,6 +5,8 @@ from gtts import gTTS
 import os
 import playsound
 import speech_recognition as sr
+import subprocess
+
 
 def speak(txt):
     """Converts the provided text to speech using gTTS."""
@@ -75,12 +77,43 @@ def send_command(command,location,coords):
     response.raise_for_status()  # Raise HTTPError for bad responses
     return response.json()
 
+
+
+
+
+
+
+def execute_local_command(command):
+    """Executes a local command on the client machine."""
+    try:
+        if 'terminal' in command.lower():
+            # Example command to open a terminal (this may vary based on your OS)
+            subprocess.Popen(['gnome-terminal'])  # For Linux with GNOME
+            return "Terminal opened."
+        elif 'firefox' in command.lower():
+            subprocess.Popen(['firefox'])
+            return "firefox opened."
+
+        else:
+            return "Local command not recognized."
+    except Exception as e:
+        return f"Error executing local command: {str(e)}"
+    
+
+
+
 while True:
     user_request = record()
     if user_request:
         print(f"User request: {user_request}")
-        location ,coords = get_ip_location()
-        response = send_command(user_request,location,coords)
-        speak(response.get('response'))
-        print(response.get('response'))
-        
+        location, coords = get_ip_location()
+        if 'run' in user_request.lower():
+            # Handle local command directly
+            local_response = execute_local_command(user_request)
+            speak(local_response)
+            print(local_response)
+        else:
+            # Send command to server
+            response = send_command(user_request, location, coords)
+            speak(response.get('response'))
+            print(response.get('response'))

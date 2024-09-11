@@ -57,10 +57,6 @@ def get_local_time(coords):
 
 
 
-
-
-
-
 def process_voice_command(command,location,coords):
     # Mock function to simulate voice command processing
     if "weather" in command.lower():
