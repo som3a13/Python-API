@@ -54,12 +54,15 @@ def get_weather(location_name):
 def process_voice_command(command):
     # Mock function to simulate voice command processing
     if "weather" in command.lower():
-        return "The weather today is sunny with a high of 25°C."
+        parts = command.split('weather', 1)
+        if len(parts) > 1:
+            location_name = parts[1].strip()
+            return get_weather(location_name)
+        else:
+            return "Sorry, I didn't receive a location for the weather query."
     elif 'time' in command.lower():
           return  ctime()   
-    elif  "location" in command.lower():
-        location_name = command.lower().split('location', 1)[1].strip()
-        return get_weather(location_name)
+
     else:
         return "Sorry, I didn't understand that command."
 
