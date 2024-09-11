@@ -65,15 +65,6 @@ def process_voice_command(command,location,coords):
           return  get_local_time(coords)
     elif 'location' in command.lower():
         return location
-    
-
-
-
-
-
-
-
-
     else:
         return "Sorry, I didn't understand that command."
 

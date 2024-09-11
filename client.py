@@ -93,7 +93,7 @@ def execute_local_command(command):
         elif 'firefox' in command.lower():
             subprocess.Popen(['firefox'])
             return "firefox opened."
-
+        
         else:
             return "Local command not recognized."
     except Exception as e:
