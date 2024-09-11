@@ -43,8 +43,8 @@ def get_local_time(coords):
         tf = TimezoneFinder()
         # Find the timezone based on the coordinates
         tz = tf.timezone_at(lng=longitude, lat=latitude)
-        local_time = datetime.now(timezone(tz)).strftime('%Y-%m-%d %H:%M:%S')
-        return f"The current local time is {local_time}."
+        local_time = datetime.now(timezone(tz)).strftime('%a %b %d %H:%M:%S %Y')
+        return f"Today is  {local_time}."
     except Exception as e:
         return f"Could not determine the local time. Error: {str(e)}"
 
@@ -64,12 +64,20 @@ def get_local_time(coords):
 def process_voice_command(command,location,coords):
     # Mock function to simulate voice command processing
     if "weather" in command.lower():
-       
         return get_weather(location,coords)
     elif 'time' in command.lower():
           return  get_local_time(coords)
     elif 'location' in command.lower():
         return location
+    
+
+
+
+
+
+
+
+
     else:
         return "Sorry, I didn't understand that command."
 
