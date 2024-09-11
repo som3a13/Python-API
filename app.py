@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-from time import ctime
 from pyowm import OWM
 from pyowm.utils.config import get_default_config
 from pytz import timezone
@@ -68,7 +67,7 @@ def process_voice_command(command,location,coords):
        
         return get_weather(location,coords)
     elif 'time' in command.lower():
-          return  ctime()
+          return  get_local_time(coords)
     elif 'location' in command.lower():
         return location
     else:
