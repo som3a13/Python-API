@@ -7,7 +7,7 @@ def process_voice_command(command):
     if "weather" in command.lower():
         return "The weather today is sunny with a high of 25°C."
     elif 'time' in command.lower():
-            ctime()   
+          return  ctime()   
     else:
         return "Sorry, I didn't understand that command."
 

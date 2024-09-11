@@ -20,7 +20,7 @@ def send_command(command):
     return response.json()
 
 # Example usage
-response = send_command("What is the weather?")
+response = send_command("time")
 speak(response['response'])
 
 # import requests
