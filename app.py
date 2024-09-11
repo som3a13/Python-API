@@ -61,7 +61,7 @@ def process_voice_command(command,location,coords):
     elif 'time' in command.lower():
           return  ctime()   
     elif 'location' in command.lower():
-        return 
+        return location
     else:
         return "Sorry, I didn't understand that command."
 
