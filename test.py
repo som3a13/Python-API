@@ -10,7 +10,7 @@ def get_ip_location():
     try:
         response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
         data = response.json()
-        location = data.get('city')
+        location = data.get('city') + ', ' + data.get('country')
         
         return location
     except Exception as e:

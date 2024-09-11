@@ -46,10 +46,32 @@ def record(order=None, timeout=None):
         print(f"Error connecting to the Google Web Speech API: {e}")
         return None
 
-def send_command(command):
+
+
+GEOLOCATION_API_KEY = '6cedec10ca3499'
+GEOLOCATION_API_URL = 'https://ipinfo.io/json'
+
+def get_ip_location():
+    try:
+        response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
+        data = response.json()
+        location = data.get('city') + ', ' + data.get('country')
+        coords=data.get('loc').split(',')
+        return location,coords
+    except Exception as e:
+        return None
+
+
+
+
+
+
+
+
+def send_command(command,location,coords):
     """Sends a command to the specified API and returns the response."""
     url = 'https://python-api-production-d196.up.railway.app/process_voice'
-    response = requests.post(url, json={'command': command})
+    response = requests.post(url, json={'command': command, 'location': location, 'coords' : coords})
     response.raise_for_status()  # Raise HTTPError for bad responses
     return response.json()
 
@@ -57,6 +79,6 @@ while True:
     user_request = record()
     if user_request:
         print(f"User request: {user_request}")
-        response = send_command(user_request)
+        response = send_command(user_request,get_ip_location())
         speak(response.get('response'))
         print(response.get('response'))

@@ -25,15 +25,11 @@ owm = OWM(WEATHER_API_KEY, config)
 weather_manager = owm.weather_manager()
 
 
-def get_weather(location_name):
+def get_weather(location_name,coords):
     try:
-        response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
-        data = response.json()
         # Fetch weather data
-        coords=data.get('loc').split(',')
-        latitude, longitude = map(float, coords)
-        print(latitude)
-        print(longitude)
+        
+        latitude, longitude = map(float, coords.split(','))
         observation = weather_manager.weather_at_coords(latitude, longitude)
         w = observation.weather
         temp = w.temperature('celsius')['temp']
@@ -45,15 +41,6 @@ def get_weather(location_name):
 
 
 
-def get_ip_location():
-    try:
-        response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
-        data = response.json()
-        location = data.get('city') + ', ' + data.get('country')
-        
-        return location
-    except Exception as e:
-        return None
 
 
 
@@ -66,16 +53,15 @@ def get_ip_location():
 
 
 
-
-def process_voice_command(command):
+def process_voice_command(command,location,coords):
     # Mock function to simulate voice command processing
     if "weather" in command.lower():
-        location_name = get_ip_location()
-        return get_weather(location_name)
+       
+        return get_weather(location,coords)
     elif 'time' in command.lower():
           return  ctime()   
     elif 'location' in command.lower():
-        return get_ip_location()
+        return 
     else:
         return "Sorry, I didn't understand that command."
 
@@ -83,10 +69,13 @@ def process_voice_command(command):
 def process_voice():
     data = request.get_json()
     command = data.get('command')
+    location = data.get('location')
+    coords=data.get('coords').split(',')
+    latitude, longitude = map(float, coords)
     if not command:
         return jsonify({'error': 'No command provided'}), 400
 
-    response = process_voice_command(command)
+    response = process_voice_command(command,location,coords)
     return jsonify({'response': response})
 
 if __name__ == '__main__':
