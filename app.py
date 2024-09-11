@@ -58,7 +58,7 @@ def process_voice_command(command):
     elif 'time' in command.lower():
           return  ctime()   
     elif  "location" in command.lower():
-        location_name = command.lower().split('weather', 1)[1].strip()
+        location_name = command.lower().split('location', 1)[1].strip()
         return get_weather(location_name)
     else:
         return "Sorry, I didn't understand that command."
