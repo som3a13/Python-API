@@ -3,3 +3,4 @@ pyowm
 pytz
 timezonefinder
 datetime
+cors
