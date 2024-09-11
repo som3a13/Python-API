@@ -30,7 +30,7 @@ def get_weather(location_name):
         response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
         data = response.json()
         # Fetch weather data
-        coords=data.get('loc','').split(',')
+        coords=data.get('loc').split(',')
         latitude, longitude = map(float, coords)
         print(latitude)
         print(longitude)
@@ -49,7 +49,7 @@ def get_ip_location():
     try:
         response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
         data = response.json()
-        location = data.get('city', '') + ', ' + data.get('country', '')
+        location = data.get('city') + ', ' + data.get('country')
         
         return location
     except Exception as e:
