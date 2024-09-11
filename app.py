@@ -70,7 +70,7 @@ def process_voice():
     data = request.get_json()
     command = data.get('command')
     location = data.get('location')
-    coords=data.get('coords').split(',')
+    coords =data.get('coords')
     latitude, longitude = map(float, coords)
     if not command:
         return jsonify({'error': 'No command provided'}), 400

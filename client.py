@@ -79,6 +79,7 @@ while True:
     user_request = record()
     if user_request:
         print(f"User request: {user_request}")
-        response = send_command(user_request,get_ip_location())
+        location ,coords = get_ip_location()
+        response = send_command(user_request,location,coords)
         speak(response.get('response'))
         print(response.get('response'))
