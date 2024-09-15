@@ -1,4 +1,4 @@
-import requests
+from flask import Flask, request, jsonify
 from pyowm import OWM
 from pyowm.utils.config import get_default_config
 from pytz import timezone
@@ -6,48 +6,27 @@ from timezonefinder import TimezoneFinder
 from datetime import datetime
 
 
-GEOLOCATION_API_KEY = '6cedec10ca3499'
-GEOLOCATION_API_URL = 'https://ipinfo.io/json'
+from flask_cors import CORS
 
-def get_ip_location():
-    try:
-        response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
-        data = response.json()
-        location = data.get('city') + ', ' + data.get('country')
-        
-        return location
-    except Exception as e:
-        return None
+app = Flask(__name__)
+CORS(app)  # A
 
 
 
-
-
-
-
-
-
-
+########################################
+#############APIs Tokens################
 WEATHER_API_KEY = '7d8902ab449d7423b3ccbbf735193c84'
 config = get_default_config()
-config['language'] = 'en'  # Your preferred language for weather reports
+config['language'] = 'en' 
 owm = OWM(WEATHER_API_KEY, config)
-
-# Get weather manager
 weather_manager = owm.weather_manager()
 
 
-
-
-def get_weather(location_name):
+def get_weather(location_name,coords):
     try:
-        response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
-        data = response.json()
         # Fetch weather data
-        coords=data.get('loc').split(',')
+        
         latitude, longitude = map(float, coords)
-        print(latitude)
-        print(longitude)
         observation = weather_manager.weather_at_coords(latitude, longitude)
         w = observation.weather
         temp = w.temperature('celsius')['temp']
@@ -56,14 +35,10 @@ def get_weather(location_name):
     except Exception as e:
         return f"Sorry, I couldn't fetch the weather data. Error: {str(e)}"
 
-def get_local_time():
+
+def get_local_time(coords):
     """Fetches the local time based on provided location coordinates."""
     try:
-        response = requests.get(GEOLOCATION_API_URL, params={'token': GEOLOCATION_API_KEY})
-        data = response.json()
-        # Fetch weather data
-        coords=data.get('loc').split(',')
-        latitude, longitude = map(float, coords)
         latitude, longitude = map(float, coords)
         tf = TimezoneFinder()
         # Find the timezone based on the coordinates
@@ -75,7 +50,36 @@ def get_local_time():
 
 
 
-print(get_ip_location())
-location_name = get_ip_location()
-print(get_weather(location_name))
-print(get_local_time())
+
+
+
+
+
+
+
+def process_voice_command(command,location,coords):
+    # Mock function to simulate voice command processing
+    if "weather" in command.lower():
+        return get_weather(location,coords)
+    elif 'time' in command.lower():
+          return  get_local_time(coords)
+    elif 'location' in command.lower():
+        return location
+    else:
+        return "Sorry, I didn't understand that command."
+
+@app.route('/process_voice', methods=['POST'])
+def process_voice():
+    data = request.get_json()
+    command = data.get('command')
+    location = data.get('location')
+    coords =data.get('coords')
+
+    if not command:
+        return jsonify({'error': 'No command provided'}), 400
+
+    response = process_voice_command(command,location,coords)
+    return jsonify({'response': response})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080)
